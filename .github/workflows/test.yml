@@ -36,9 +36,9 @@ jobs:
       - shell: pwsh
         name: PowerShell Script number 2
         env:
-         SUPER_SECRET: ${{dev.MTC_SECRET_3_DEV}}
+         SUPER_SECRET: ${{secret.MTC_SECRET_2_DEV}}
         run: |
-            Write-Host "$env:MTC_SECRET_3_DEV"
+            Write-Host "$env:SUPER_SECRET"
             
       - name: Dump GitHub context
         env:
