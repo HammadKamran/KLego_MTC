@@ -32,9 +32,9 @@ jobs:
           script: |
             Write-Host "hello"      
         
-      #- name: PowerShell Script number 2
       - shell: pwsh
+        name: PowerShell Script number 2
         env:
          SUPER_SECRET: ${{ secrets.MTC_SECRET_1 }}
         run: |
-            example-command "$env:MTC_SECRET_1"
+            Write-Host "$env:MTC_SECRET_1"
