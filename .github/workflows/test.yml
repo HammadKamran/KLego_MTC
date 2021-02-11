@@ -22,10 +22,3 @@ jobs:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
         uses: actions/checkout@v2
-        
-      - name: test
-      - shell: bash
-        env:
-          SUPER_SECRET: ${{ secrets.MTC_SECRET_1 }}
-        run: |
-            example-command "$MTC_SECRET_1"
