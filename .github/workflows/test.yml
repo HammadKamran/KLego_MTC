@@ -15,9 +15,15 @@ on:
 
 jobs:
   build-and-deploy-to-dev:
+    #name the job
+    name: build-and-deploy-to-dev
     runs-on: ubuntu-latest
     steps:
-      - name: TEST
+      # Checks out a copy of your repository on the ubuntu-latest machine
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: test
       - shell: bash
         env:
           SUPER_SECRET: ${{ secrets.MTC_SECRET_1 }}
