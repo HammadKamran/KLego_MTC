@@ -17,6 +17,7 @@ jobs:
   build-and-deploy-to-dev:
     #name the job
     name: build-and-deploy-to-dev
+    environment: dev
     runs-on: ubuntu-latest
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
@@ -35,9 +36,9 @@ jobs:
       - shell: pwsh
         name: PowerShell Script number 2
         env:
-         SUPER_SECRET: ${{ secrets.MTC_SECRET_1 }}
+         SUPER_SECRET: ${{ secrets.MTC_SECRET_1_DEV }}
         run: |
-            Write-Host "$env:MTC_SECRET_1"
+            Write-Host "$env:MTC_SECRET_1_DEV"
             
       - name: Dump GitHub context
         env:
