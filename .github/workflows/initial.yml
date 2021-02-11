@@ -22,14 +22,9 @@ jobs:
   build-and-deploy-to-dev:
     runs-on: ubuntu-latest
     steps:
-    - name: Hello world actionn
-      with: # Set Azure credentials secret as an input
-        super_secret: ${{ secrets.MTC_SECRET_1 }}
-      env: # Or as an environment variable
-        super_secret: ${{ secrets.MTC_SECRET_1 }}
-    - name: TEST
-    - shell: bash
-      env:
-        SUPER_SECRET: ${{ secrets.MTC_SECRET_1 }}
-      run: |
-        example-command "$MTC_SECRET_1"
+      - name: TEST
+      - shell: bash
+        env:
+          SUPER_SECRET: ${{ secrets.MTC_SECRET_1 }}
+        run: |
+            example-command "$MTC_SECRET_1"
