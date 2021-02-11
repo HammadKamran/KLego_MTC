@@ -32,7 +32,7 @@ jobs:
           script: |
             Write-Host "hello"      
         
-      - name: PowerShell Script number 2
+      #- name: PowerShell Script number 2
       - shell: pwsh
         env:
          SUPER_SECRET: ${{ secrets.MTC_SECRET_1 }}
