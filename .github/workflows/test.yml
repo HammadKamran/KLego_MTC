@@ -22,7 +22,8 @@ jobs:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: PowerShell script
+      
+      - name: PowerShell script number 1
         # You may pin to the exact commit or the version.
         # uses: Amadevus/pwsh-script@1f1751bbf3d1a92127bfc6c32403283625880cbf
         uses: Amadevus/pwsh-script@v2.0.1
@@ -30,3 +31,10 @@ jobs:
           # PowerShell script to execute in Actions-hydrated context
           script: |
             Write-Host "hello"      
+        
+      - name: PowerShell Script number 2
+      - shell: pwsh
+        env:
+         SUPER_SECRET: ${{ secrets.MTC_SECRET_1 }}
+        run: |
+            example-command "$env:MTC_SECRET_1"
