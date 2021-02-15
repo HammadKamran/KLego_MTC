@@ -5,8 +5,8 @@ name: Workflow to deploy ARM Templates to resource group
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
+#   push:
+#     branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -36,9 +36,31 @@ jobs:
       - shell: pwsh
         name: PowerShell Script number 2
         env:
-         SUPER_SECRET: ${{secrets.MTC_SECRET_2_DEV}}
+         SUPER_SECRET: ${{secrets.AZURE_CREDENTIALS}}
         run: |
             Write-Host "$env:SUPER_SECRET"
+            
+      - name: Deploy Azure Resource Manager (ARM) Template
+        uses: Azure/arm-deploy@v1
+        with:
+          # Provide the scope of the deployment. Valid values are: 'resourcegroup', 'managementgroup', 'subscription'
+         scope: "resourcegroup" 
+          # Provide the Id of the subscription which should be used, only required for resource Group or Subscription deployments.
+         subscriptionId: "eb5a257a-76e2-472d-9fdc-7f9b3172fcf6"
+         # Specify the Id for the Management Group, only required for Management Group Deployments.
+         #managementGroupId: # optional
+         # Provide the target region, only required for management Group or Subscription deployments.
+         # region: # optional
+         # Provide the name of a resource group, only required for resource Group deployments.
+         resourceGroupName: "rg-kdevops-dev"
+          # Specify the path or URL to the Azure Resource Manager template.
+         template: "deployment/template/template.json" 
+          # Incremental (only add resources to resource group) or Complete (remove extra resources from resource group) or Validate (only validates the template).
+         deploymentMode: "Incremental"
+          # Specifies the name of the resource group deployment to create.
+         deploymentName: "gitHubDeployment"
+          # Supply deployment parameter values.
+         parameters: "deployment/template/parameters.json" 
             
       - name: Dump GitHub context
         env:
