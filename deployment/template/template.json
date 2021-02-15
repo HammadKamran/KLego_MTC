@@ -1,0 +1,261 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_kvelocity_la_DataReceive_name": {
+            "defaultValue": "kvelocity-la-DataReceive",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_kvelocity_la_DataReceive_name')]",
+            "location": "eastus2",
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "triggers": {
+                        "manual": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "method": "PUT",
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "actions": {
+                        "HTTP": {
+                            "runAfter": {
+                                "Switch": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Http",
+                            "inputs": {
+                                "body": "@triggerBody()",
+                                "headers": "@triggerOutputs()['headers']",
+                                "method": "PUT",
+                                "uri": "@variables('DATARECV_URL')"
+                            }
+                        },
+                        "Initialize_variable": {
+                            "runAfter": {
+                                "Response": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "vModValue",
+                                        "type": "integer",
+                                        "value": "@mod(int(triggerOutputs()['headers']?['srcextbatchid']),1)"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_variable_2": {
+                            "runAfter": {
+                                "Initialize_variable": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "DATARECV_URL",
+                                        "type": "string",
+                                        "value": "@{null}"
+                                    }
+                                ]
+                            }
+                        },
+                        "Response": {
+                            "runAfter": {},
+                            "type": "Response",
+                            "kind": "Http",
+                            "inputs": {
+                                "body": {
+                                    "ResponseMsg": " @{workflow()['run']['name']} - Rquest receved by Azure for processing"
+                                },
+                                "schema": {
+                                    "properties": {
+                                        "ResponseMsg": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "statusCode": 200
+                            }
+                        },
+                        "Switch": {
+                            "runAfter": {
+                                "Initialize_variable_2": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "cases": {
+                                "Case": {
+                                    "case": 0,
+                                    "actions": {
+                                        "Datareceieve_1": {
+                                            "runAfter": {},
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "DATARECV_URL",
+                                                "value": "https://prod-62.eastus2.logic.azure.com:443/workflows/19370d89e7404c2693de32707ab3613b/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=elNWTSsiOL13JM0AyRIlK12bKwvAS1CnHrvtcycoqnM"
+                                            }
+                                        }
+                                    }
+                                },
+                                "Case_10": {
+                                    "case": 9,
+                                    "actions": {
+                                        "Set_variable_10": {
+                                            "runAfter": {},
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "DATARECV_URL",
+                                                "value": "https://prod-62.eastus2.logic.azure.com:443/workflows/19370d89e7404c2693de32707ab3613b/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=elNWTSsiOL13JM0AyRIlK12bKwvAS1CnHrvtcycoqnM"
+                                            }
+                                        }
+                                    }
+                                },
+                                "Case_2": {
+                                    "case": 1,
+                                    "actions": {
+                                        "Set_variable": {
+                                            "runAfter": {},
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "DATARECV_URL",
+                                                "value": "https://prod-62.eastus2.logic.azure.com:443/workflows/19370d89e7404c2693de32707ab3613b/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=elNWTSsiOL13JM0AyRIlK12bKwvAS1CnHrvtcycoqnM"
+                                            }
+                                        }
+                                    }
+                                },
+                                "Case_3": {
+                                    "case": 2,
+                                    "actions": {
+                                        "Set_variable_2": {
+                                            "runAfter": {},
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "DATARECV_URL",
+                                                "value": "https://prod-62.eastus2.logic.azure.com:443/workflows/19370d89e7404c2693de32707ab3613b/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=elNWTSsiOL13JM0AyRIlK12bKwvAS1CnHrvtcycoqnM"
+                                            }
+                                        }
+                                    }
+                                },
+                                "Case_4": {
+                                    "case": 3,
+                                    "actions": {
+                                        "Set_variable_4": {
+                                            "runAfter": {},
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "DATARECV_URL",
+                                                "value": "https://prod-62.eastus2.logic.azure.com:443/workflows/19370d89e7404c2693de32707ab3613b/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=elNWTSsiOL13JM0AyRIlK12bKwvAS1CnHrvtcycoqnM"
+                                            }
+                                        }
+                                    }
+                                },
+                                "Case_5": {
+                                    "case": 4,
+                                    "actions": {
+                                        "Set_variable_5": {
+                                            "runAfter": {},
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "DATARECV_URL",
+                                                "value": "https://prod-62.eastus2.logic.azure.com:443/workflows/19370d89e7404c2693de32707ab3613b/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=elNWTSsiOL13JM0AyRIlK12bKwvAS1CnHrvtcycoqnM"
+                                            }
+                                        }
+                                    }
+                                },
+                                "Case_6": {
+                                    "case": 5,
+                                    "actions": {
+                                        "Set_variable_6": {
+                                            "runAfter": {},
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "DATARECV_URL",
+                                                "value": "https://prod-62.eastus2.logic.azure.com:443/workflows/19370d89e7404c2693de32707ab3613b/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=elNWTSsiOL13JM0AyRIlK12bKwvAS1CnHrvtcycoqnM"
+                                            }
+                                        }
+                                    }
+                                },
+                                "Case_7": {
+                                    "case": 6,
+                                    "actions": {
+                                        "Set_variable_7": {
+                                            "runAfter": {},
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "DATARECV_URL",
+                                                "value": "https://prod-62.eastus2.logic.azure.com:443/workflows/19370d89e7404c2693de32707ab3613b/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=elNWTSsiOL13JM0AyRIlK12bKwvAS1CnHrvtcycoqnM"
+                                            }
+                                        }
+                                    }
+                                },
+                                "Case_8": {
+                                    "case": 7,
+                                    "actions": {
+                                        "Set_variable_8": {
+                                            "runAfter": {},
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "DATARECV_URL",
+                                                "value": "https://prod-62.eastus2.logic.azure.com:443/workflows/19370d89e7404c2693de32707ab3613b/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=elNWTSsiOL13JM0AyRIlK12bKwvAS1CnHrvtcycoqnM"
+                                            }
+                                        }
+                                    }
+                                },
+                                "Case_9": {
+                                    "case": 8,
+                                    "actions": {
+                                        "Set_variable_9": {
+                                            "runAfter": {},
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "DATARECV_URL",
+                                                "value": "https://prod-62.eastus2.logic.azure.com:443/workflows/19370d89e7404c2693de32707ab3613b/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=elNWTSsiOL13JM0AyRIlK12bKwvAS1CnHrvtcycoqnM"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "default": {
+                                "actions": {
+                                    "Set_variable_3": {
+                                        "runAfter": {},
+                                        "type": "SetVariable",
+                                        "inputs": {
+                                            "name": "DATARECV_URL",
+                                            "value": "https://prod-62.eastus2.logic.azure.com:443/workflows/19370d89e7404c2693de32707ab3613b/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=elNWTSsiOL13JM0AyRIlK12bKwvAS1CnHrvtcycoqnM"
+                                        }
+                                    }
+                                }
+                            },
+                            "expression": "@variables('vModValue')",
+                            "type": "Switch"
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {}
+            }
+        }
+    ]
+}
