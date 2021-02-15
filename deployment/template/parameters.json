@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "workflows_kvelocity_la_DataReceive_name": {
-            "value": null
+            "value": "kvelocity_la_DataReceive_gitHub"
         }
     }
 }
