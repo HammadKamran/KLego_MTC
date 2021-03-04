@@ -34,4 +34,6 @@ jobs:
         with:
           inlineScript: |
             Get-AzLogicApp -ResourceGroupName "rg-kdevops-dev" -Name "kvelocity_la_DataReceive_gitHub"
+            Write-Host "hkamran"
+            Get-ChildItem -Path '/home/runner/work/KLego_MTC/KLego_MTC'
           azPSVersion: '3.1.0'
